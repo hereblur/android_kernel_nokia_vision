@@ -1,0 +1,111 @@
+/*
+ * icnl9911 skyworth LCD config dtsi file for spreadtrum
+ *
+ * Copyright (C) 2018, Spreadtrum Communications Inc.
+ *
+ * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+ */
+
+/ {
+	fragment {
+		target-path = "/";
+		__overlay__ {
+			lcds {
+				lcd_icnl9911_lide_mipi_hdp: lcd_icnl9911_lide_mipi_hdp {
+
+					sprd,dsi-work-mode = <1>; /* video burst mode*/
+//					sprd,dsi-work-mode = <3>; /* video SPRD_DSI_MODE_VIDEO_SYNC_EVENT mode*/
+					sprd,dsi-lane-number = <4>;
+					sprd,dsi-color-format = "rgb888";
+
+
+					sprd,phy-bit-clock = <691000>;	/* kbps */
+					sprd,phy-escape-clock = <20000>;/* kHz */
+
+					sprd,esd-check-enable = <1>;
+					sprd,esd-check-mode = <1>;
+					sprd,esd-check-period = <2000>;
+
+					sprd,width-mm = <68>;
+					sprd,height-mm = <151>;
+					
+					sprd,reset-on-sequence = <1 6>, <0 5>, <1 20>;
+					sprd,reset-off-sequence = <1 5>;
+
+					sprd,use-dcs-write;
+
+					sprd,initial-command = [
+						39 00 00 03 F0 5A 59
+						39 00 00 03 F1 A5 A6
+						39 00 00 1F B0 89 88 00 00 89 8A 00 00 77 00 77 00 08 01 01 6F 01 01 0F 05 04 03 02 01 02 03 04 00 00 00
+						39 00 00 1E B1 97 C4 89 05 1F 00 00 75 00 00 03 08 54 00 00 00 44 40 02 01 40 02 01 40 02 01 40 02 01
+						39 00 00 12 B2 54 C4 82 05 40 02 01 40 02 01 05 05 54 88 0E 0D 0B
+						//forward
+						39 00 00 1D B5 00 00 08 08 1C 1C 1D 1D 14 03 0C 16 0E 18 10 1A 12 04 04 00 00 00 FF FF FC 00 00 00
+						39 00 00 1D B4 00 00 09 09 1C 1C 1D 1D 15 03 0D 17 0F 19 11 1B 13 05 05 00 00 00 FF FF FC 00 00 00
+						//back
+						//39 00 00 1D B5 00 00 08 08 1C 1C 1D 1D 0C 03 14 0E 16 10 18 12 1A 04 04 00 00 00 FF FF FC 00 00 00
+						//39 00 00 1D B4 00 00 09 09 1C 1C 1D 1D 0D 03 15 0F 17 11 19 13 1B 05 05 00 00 00 FF FF FC 00 00 00
+						//39 00 00 03 BA 3E 3E//VCOM
+						39 00 00 19 B8 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+						39 00 00 0E BB 01 05 09 11 0D 19 1D 55 25 69 00 21 25
+						39 00 00 0E BC 00 00 00 00 02 20 FF 00 03 13 01 73 33
+						39 00 00 0B BD E9 02 4E CF 72 A4 08 44 AE 15
+						39 00 00 0B BE 59 59 50 32 0C 77 43 07 0E 0E//VGMPVGMN-0B
+						39 00 00 0A C0 10 FF FF FF FF FF 00 FF 00
+						39 00 00 14 C1 C0 20 20 96 04 54 58 04 2A 40 36 00 07 CF FF FF 95 01 C0//HBP=84HFP=88AUTOTRIMEN=1
+						39 00 00 0A C2 CC 01 10 00 01 30 02 21 43
+						39 00 00 0A C3 06 00 FF 00 FF 00 00 89 01
+						39 00 00 0B C4 84 01 2B 41 00 3C 00 03 03 2E
+						39 00 00 0D C5 03 1C C0 B8 50 10 84 94 12 09 26 00
+						39 00 00 0B C6 95 98 29 29 29 33 7F 04 08 00
+						//GAMMA2.2
+						39 00 00 17 C7 F7 B3 8E 73 44 25 F6 4C 1C F6 D1 A6 01 D7 B9 8F 75 50 1A 7E C4 00
+						39 00 00 17 C8 F7 B3 8E 73 44 25 F6 4C 1C F6 D1 A6 01 D7 B9 8F 75 50 1A 7E C4 00
+
+						15 00 00 02 CB 00
+						39 00 00 06 D0 80 0D FF 0F 61
+						15 00 00 02 D2 42
+						39 00 00 04 FA 45 93 01
+						39 00 00 05 FE FF FF FF 40
+						39 00 00 03 F1 5A 59
+						39 00 00 03 F0 A5 A6
+						15 00 00 02 35 00
+
+						15 78 00 02 11 00
+						15 23 00 02 29 00
+						15 05 00 02 26 01
+						];
+
+					sprd,sleep-in-command = [
+						23 00 00 02 26 08
+						23 23 00 02 28 00
+						23 78 00 02 10 00
+						];
+
+					sprd,sleep-out-command = [
+						23 78 00 02 11 00
+						23 23 00 02 29 00
+						23 00 00 02 26 02
+						];
+
+					display-timings {
+						native-mode = <&icnl9911_lide_timing0>;
+
+						icnl9911_lide_timing0: timing0 {
+							clock-frequency = <96000000>;
+							hactive = <720>;
+							vactive = <1600>;
+							hback-porch = <84>;
+							hfront-porch = <88>;
+							vback-porch = <32>;
+							vfront-porch = <150>;
+							hsync-len = <4>;
+							vsync-len = <4>;
+						};
+					};
+				};
+			};
+		};
+	};
+};
